@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wdi.lab.machine.dao.LabMapper">
+	<resultMap id="WaterValvetMap" type="wdi.lab.machine.entity.WaterValve" >
+<!--		<result column="ID" property="ID" />-->
+		<result column="MachineNum" property="MachineNum" />
+		<result column="InletOrder" property="InletOrder" />
+		<result column="DrainOrder" property="DrainOrder" />
+		<result column="JobNum" property="JobNum" />
+		<result column="RealWaterLevel" property="RealWaterLevel" />
+		<result column="FullDrain" property="FullDrain" />
+		<result column="HalfDrain" property="HalfDrain" />
+		<result column="Status" property="Status" />
+		<result column="Count" property="Count" />
+		<result column="CreateTime" property="CreateTime" />
+	</resultMap>
+
+    <select id="selectAll" resultType="HashMap">
+		SELECT * FROM [dbo].[ZP_OrderInformation] where TestType is not null
+	</select>
+
+	<select id="deleteInfo" statementType="STATEMENT">
+		DELETE ${tableName} where [排水阀委托单]='${DrainOrder}' and  [进水阀委托单]='${InletOrder}' and [测试次数]='${count}'
+	</select>
+
+	<select id="selectMachine" parameterType="String" resultMap="WaterValvetMap" statementType="STATEMENT">
+	SELECT  ID, '${tableName}' as 'MachineNum' ,进水阀委托单 as 'InletOrder',排水阀委托单 as
+		'DrainOrder',工位 as 'JobNum',实际进水水位 as 'RealWaterLevel',全排排后水位 as 'FullDrain',
+		半排排后水位 as 'HalfDrain',当前状态 as 'Status',测试次数 as 'Count',CreateTime FROM  ${tableName}
+	</select>
+</mapper>
